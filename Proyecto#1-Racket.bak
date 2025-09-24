@@ -20,16 +20,28 @@
                                                                  (cdr lista)))]
         [else (eliminar-elem elemento (cdr lista))]))
 
-(define (build-freq-table string)
- (sort (frecuencias (string-to-list string))
-                  (lambda (x y) (> (cdr x) (cdr y)))))
+(define (analizar lista)
+  (displayln (frecuencias lista))
+  (displayln (car (mas-repetida (frecuencias lista)))))
 
 ;devuelve la lista con la cantidad de cada palabra (palabra cantidad)
 (define (frecuencias lista)
-  (map (lambda (x) (cons (string x)
-                         (contar x
-                                 lista)))
+  (map (lambda (x) (cons x
+                         (cons (contar x
+                                         lista)
+                                 null)))
        (eliminar-duplicados lista)))
+
+;obtiene la palabra mas repetida (palabra cantidad)
+(define (mas-repetida lista)
+  (mas-repetida-aux lista (car lista)))
+
+(define (mas-repetida-aux lista M)
+  (cond [(empty? lista) M]
+        [(> (cadar lista) (cadr M)) (mas-repetida-aux (cdr lista)
+                                                      (car lista))]
+        [else (mas-repetida-aux (cdr lista)
+                                M)]))
 
 ;cuenta la cantidad de ocurrencias de una palabra en la lista
 (define (contar palabra lista)
@@ -45,13 +57,3 @@
         [else (tam-aux (cdr lista)
                        (+ t
                           1))]))
-
-;convierte un STRING a una lista de caracteres
-(define (string-to-list string)
-  (string-to-list-aux string 0))
-
-(define (string-to-list-aux string i)
-  (cond [(< i (string-length string)) (cons (string-ref string i)
-                             (string-to-list-aux string
-                                                  (+ 1 i)))]
-        [else null] ))
