@@ -59,5 +59,10 @@
 ;forest=> '(("a" . 5) ("b" . 2) ("r" . 2) ("c" . 1) ("d" . 1))
 ;(cdar forest)=> 5
 ;(caar forest)=> "a"
-;(define (build-tree forest)
-;  (cond [()]))
+
+(define (build-tree forest)
+  (cond [(empty? lista) null]
+        [else (cons (caar forest) (cons (caadr forest) (+)))]))
+
+
+
