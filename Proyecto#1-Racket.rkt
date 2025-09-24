@@ -64,5 +64,17 @@
   (cond [(empty? lista) null]
         [else (cons (caar forest) (cons (caadr forest) (+)))]))
 
+(define (combinar-pares lista)
+  (combinar-pares-aux lista "" 0))
+
+(define (combinar-pares-aux lista simbolo-acum suma-acum)
+  (cond
+    [(null? lista) (cons (string->symbol simbolo-acum) suma-acum)]
+    [else
+     (combinar-pares-aux
+      (cdr lista)
+      (string-append simbolo-acum (symbol->string (car (car lista))))
+      (+ suma-acum (cdr (car lista))))]))
+
 
 
