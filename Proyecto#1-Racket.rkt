@@ -26,7 +26,7 @@
 
 ;devuelve la lista con la cantidad de cada palabra (palabra cantidad)
 (define (frecuencias lista)
-  (map (lambda (x) (cons (string x)
+  (map (lambda (x) (cons (string->symbol (string x))
                          (contar x
                                  lista)))
        (eliminar-duplicados lista)))
@@ -55,3 +55,9 @@
                              (string-to-list-aux string
                                                   (+ 1 i)))]
         [else null] ))
+
+;forest=> '(("a" . 5) ("b" . 2) ("r" . 2) ("c" . 1) ("d" . 1))
+;(cdar forest)=> 5
+;(caar forest)=> "a"
+;(define (build-tree forest)
+;  (cond [()]))
