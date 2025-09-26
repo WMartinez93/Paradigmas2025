@@ -22,7 +22,7 @@
 
 (define (build-freq-table string)
  (sort (frecuencias (string-to-list string))
-                  (lambda (x y) (> (cdr x) (cdr y)))))
+                  (lambda (x y) (< (cdr x) (cdr y)))))
 
 ;devuelve la lista con la cantidad de cada palabra (palabra cantidad)
 (define (frecuencias lista)
@@ -56,13 +56,10 @@
                                                   (+ 1 i)))]
         [else null] ))
 
-;forest=> '(("a" . 5) ("b" . 2) ("r" . 2) ("c" . 1) ("d" . 1))
-;(cdar forest)=> 5
-;(caar forest)=> "a"
+;forest=> '((c . 1) (d . 1) (b . 2) (r . 2) (a . 5))
+;(cdar forest)=> 1
+;(caar forest)=> c
 
-(define (build-tree forest)
-  (cond [(empty? lista) null]
-        [else (cons (caar forest) (cons (caadr forest) (+)))]))
 
 (define (combinar-pares lista)
   (combinar-pares-aux lista "" 0))
@@ -75,6 +72,12 @@
       (cdr lista)
       (string-append simbolo-acum (symbol->string (car (car lista))))
       (+ suma-acum (cdr (car lista))))]))
+
+(define (generar-nodo elem1 elem2)
+  (cons (combinar-pares (cons elem1 (cons elem2 null)))
+        (cons elem1 (cons elem2 null))))
+
+
 
 
 
