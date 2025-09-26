@@ -75,7 +75,7 @@
 
 (define (generar-nodo elem1 elem2)
   (cons (combinar-pares (cons elem1 (cons elem2 null)))
-        (cons elem1 (cons elem2 null))))
+        (cons (cons elem1 (cons elem2 null)) null))
 
 
 
