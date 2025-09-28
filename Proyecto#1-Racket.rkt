@@ -60,23 +60,50 @@
 ;(cdar forest)=> 1
 ;(caar forest)=> c
 
+;construye el arbol binario
+(define (build-tree forest)
+  (cond [(= 1 (length forest)) (car forest)]
+        [else (build-tree (insertar-nodo (combinar-pares (car forest)
+                                                         (cadr forest)) (cddr forest)))]))
 
-(define (combinar-pares lista)
-  (combinar-pares-aux lista "" 0))
+;inserta un nodo en una lista
+(define (insertar-nodo nodo lista)
+  (cond [(empty? lista) (list nodo)]
+        [(< (obtener-frecuencia nodo)
+            (obtener-frecuencia (car nodo))) (cons nodo
+                                                    lista)]
+        [else (cons (car lista)
+                    (insertar-nodo nodo
+                                   (cdr lista)))]))
 
-(define (combinar-pares-aux lista simbolo-acum suma-acum)
-  (cond
-    [(null? lista) (cons (string->symbol simbolo-acum) suma-acum)]
-    [else
-     (combinar-pares-aux
-      (cdr lista)
-      (string-append simbolo-acum (symbol->string (car (car lista))))
-      (+ suma-acum (cdr (car lista))))]))
+;obtiene la frecuencia de un
+;nodo intermedio o de una hoja
+(define (obtener-frecuencia nodo)
+  (cond [(es-hoja? nodo) (cond [(es-hoja? (car nodo)) (cdr (car nodo))]
+                               [else (cdr nodo)])]
+        [else 0]))
 
-(define (generar-nodo elem1 elem2)
-  (cons (combinar-pares (cons elem1 (cons elem2 null)))
-        (cons (cons elem1 (cons elem2 null)) null))
+;genera un nodo intermedio
+;> (combinar-pares '(c . 1) '(d . 1))
+;'((cd . 2) (c . 1) (d . 1))
+(define (combinar-pares elem1 elem2)
+  (list (cons (string->symbol (string-append (symbol->string (cond [(es-hoja? elem1) (car elem1)]
+                                                                   [else (caar elem1)]))
+                                             (symbol->string (cond [(es-hoja? elem2) (car elem2)]
+                                                                   [else (caar elem2)]))))
+              (+ (cond [(es-hoja? elem1) (cdr elem1)]
+                       [else (cdar elem1)])
+                 (cond [(es-hoja? elem2) (cdr elem2)]
+                       [else (cdar elem2)])))
+        elem1
+        elem2))
 
+;verifica si un nodo es
+;hoja o nodo intermedio.
+(define (es-hoja? nodo)
+  (and (pair? nodo)
+       (symbol? (car nodo))
+       (number? (cdr nodo))))
 
 
 
