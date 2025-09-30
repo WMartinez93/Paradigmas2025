@@ -88,7 +88,7 @@
 ;'((cd . 2) (c . 1) (d . 1))
 (define (combinar-pares elem1 elem2)
   (cond [(< (cond [(es-hoja? elem1) (cdr elem1)]
-                  [else (cadr elem1)])
+                  [else (cdar elem1)])
             (cond [(es-hoja? elem2) (cdr elem2)]
                   [else (cdar elem2)])) (list (cons (string->symbol (string-append (symbol->string (cond [(es-hoja? elem1) (car elem1)]
                                                                                                               [else (caar elem1)]))
@@ -101,7 +101,7 @@
                                               elem1
                                               elem2)]
         [else (list (cons (string->symbol (string-append (symbol->string (cond [(es-hoja? elem2) (car elem2)]
-                                                                               [else (caar nodo2)]))
+                                                                               [else (caar elem2)]))
                                                          (symbol->string (cond [(es-hoja? elem1) (car elem1)]
                                                                                [else (caar elem1)]))))
                           (+ (cond [(es-hoja? elem1) (cdr elem1)]
