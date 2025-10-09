@@ -51,7 +51,7 @@
   (string-to-list-aux string 0))
 
 (define (string-to-list-aux string i)
-  (cond [(< i (string-length string)) (cons (string-ref string i)
+  (cond [(< i (my-string-length string)) (cons (my-string-ref string i)
                              (string-to-list-aux string
                                                   (+ 1 i)))]
         [else null] ))
@@ -151,3 +151,20 @@
         [else (displayln (car tree))])
   (cond [(not (es-hoja? tree)) (print-tree-aux (cadr tree) (append aristas (list #f)) #f)
                               (print-tree-aux (caddr tree) (append aristas (list #t)) #t)]))
+
+
+;redefinicion de length
+;para strings
+(define (my-string-length string)
+  (tam (string->list string)))
+
+;redefinicion de string-ref
+;para strings
+(define (my-string-ref string i)
+  (get-char (string->list string) i))
+
+;metodo proveido por el
+;profesor via classroom.
+(define (get-char lista n)
+  (cond [(eq? 0 n) (car lista)]
+        [else (get-char (cdr lista) (- n 1))]))
