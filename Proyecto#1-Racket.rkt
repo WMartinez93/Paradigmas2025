@@ -119,5 +119,35 @@
        (number? (cdr nodo))))
 
 
+;verifica si una lista
+;posee solo un elemento.
+(define (un-elemento? lista)
+  (cond [(empty? (cdr lista)) #t]
+        [else #f]))
 
+;dibuja la estructura
+;de acuerdo a las aristas
+;recorridas.
+(define (identacion aristas un-elemento?)
+  (map (lambda (x) (display "   ")) aristas)
+  (display (cond [(empty? aristas) ""]
+                 [(and un-elemento?
+                       (not (empty? aristas))) "└─ "]
+                 [else "├─ "])))
 
+;genera el arbol a
+;partir de un string
+(define (tree string)
+  (build-tree (build-freq-table string)))
+
+;imprime el arbol de
+;forma jerarquica
+(define (print-tree tree)
+  (print-tree-aux tree null #t))
+
+(define (print-tree-aux tree aristas un-elemento?)
+  (identacion aristas un-elemento?)
+  (cond [(es-hoja? tree) (displayln tree)]
+        [else (displayln (car tree))])
+  (cond [(not (es-hoja? tree)) (print-tree-aux (cadr tree) (append aristas (list #f)) #f)
+                              (print-tree-aux (caddr tree) (append aristas (list #t)) #t)]))
