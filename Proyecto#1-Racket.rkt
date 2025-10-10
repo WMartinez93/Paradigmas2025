@@ -168,3 +168,41 @@
 (define (get-char lista n)
   (cond [(eq? 0 n) (car lista)]
         [else (get-char (cdr lista) (- n 1))]))
+
+;convierte '(h o l a)
+;a "hola"
+(define (symbol-to-string lista)
+  (apply string-append (map symbol->string lista)))
+
+;convierte "01101001110011110110100"
+; a '(0 1 1 0 1 0 0 1 1 1 0 0 1 1 1 1 0 1 1 0 1 0 0) 
+(define (binario-to-list binario)
+  (map (lambda (x) (- (char->integer x)
+                      (char->integer #\0))) (string-to-list binario)))
+
+(define (decode arbol binario)
+  (symbol-to-string (decode-aux arbol
+                                arbol
+                                (binario-to-list binario)
+                                null)))
+
+(define (decode-aux arbol actual binario R)
+  (cond [(empty? binario) (reverse R)]
+        [else (cond [(eq? (car binario) 0) (cond [(es-hoja? (cadr actual)) (decode-aux arbol
+                                                                                       arbol
+                                                                                       (cdr binario)
+                                                                                       (cons (car (cadr actual))
+                                                                                             R))]
+                                                 [else (decode-aux arbol
+                                                                   (cadr actual)
+                                                                   (cdr binario)
+                                                                   R)])]
+                    [else (cond [(es-hoja? (caddr actual)) (decode-aux arbol
+                                                                       arbol
+                                                                       (cdr binario)
+                                                                       (cons (car (caddr actual))
+                                                                             R))]
+                                [else (decode-aux arbol
+                                                  (caddr actual)
+                                                  (cdr binario)
+                                                  R)])])]))
