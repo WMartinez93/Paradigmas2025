@@ -90,7 +90,7 @@
   (cond [(< (cond [(es-hoja? elem1) (cdr elem1)]
                   [else (cdar elem1)])
             (cond [(es-hoja? elem2) (cdr elem2)]
-                  [else (cdar elem2)])) (list (cons (string->symbol (string-append (symbol->string (cond [(es-hoja? elem1) (car elem1)]
+                  [else (cdar elem2)])) (list (cons (string->symbol (my-string-append (symbol->string (cond [(es-hoja? elem1) (car elem1)]
                                                                                                               [else (caar elem1)]))
                                                                                         (symbol->string (cond [(es-hoja? elem2) (car elem2)]
                                                                                                               [else (caar elem2)]))))
@@ -100,7 +100,7 @@
                                                                   [else (cdar elem2)])))
                                               elem1
                                               elem2)]
-        [else (list (cons (string->symbol (string-append (symbol->string (cond [(es-hoja? elem2) (car elem2)]
+        [else (list (cons (string->symbol (my-string-append (symbol->string (cond [(es-hoja? elem2) (car elem2)]
                                                                                [else (caar elem2)]))
                                                          (symbol->string (cond [(es-hoja? elem1) (car elem1)]
                                                                                [else (caar elem1)]))))
@@ -206,3 +206,7 @@
                                                   (caddr actual)
                                                   (cdr binario)
                                                   R)])])]))
+
+(define (my-string-append string1 string2)
+  (list->string (append (string->list string1)
+          (string->list string2))))
