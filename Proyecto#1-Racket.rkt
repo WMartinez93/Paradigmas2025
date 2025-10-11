@@ -210,3 +210,41 @@
 (define (my-string-append string1 string2)
   (list->string (append (string->list string1)
           (string->list string2))))
+
+; Función para generar códigos binarios del árbol de Huffman
+(define (codigos-huffman arbol)
+  (cond
+    ((es-hoja? arbol) (list (cons (car arbol) "0")))
+    (else (codigos-aux arbol ""))))
+
+; Función auxiliar para generar códigos recursivamente
+(define (codigos-aux nodo codigo-actual)
+  (cond
+    ((es-hoja? nodo) (list (cons (car nodo) codigo-actual)))
+    (else (append (codigos-aux (cadr nodo) (my-string-append codigo-actual "0"))
+                  (codigos-aux (caddr nodo) (my-string-append codigo-actual "1"))))))
+
+; Función para buscar el código de un símbolo
+(define (obtener-codigo simbolo tabla-codigos)
+  (cond
+    ((null? tabla-codigos) "")
+    ((equal? simbolo (car (car tabla-codigos))) (cdr (car tabla-codigos)))
+    (else (obtener-codigo simbolo (cdr tabla-codigos)))))
+
+; Función principal para codificar un string
+(define (huffman-encode texto arbol)
+  (codificar-string (convertir-chars-a-simbolos (string-to-list texto)) (codigos-huffman arbol)))
+
+; Función para convertir caracteres a símbolos
+(define (convertir-chars-a-simbolos lista-chars)
+  (cond
+    ((null? lista-chars) null)
+    (else (cons (string->symbol (string (car lista-chars)))
+                (convertir-chars-a-simbolos (cdr lista-chars))))))
+
+; Función auxiliar para codificar lista de caracteres
+(define (codificar-string lista-chars tabla-codigos)
+  (cond
+    ((null? lista-chars) "")
+    (else (my-string-append (obtener-codigo (car lista-chars) tabla-codigos)
+                           (codificar-string (cdr lista-chars) tabla-codigos)))))
