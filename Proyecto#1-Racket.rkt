@@ -212,7 +212,7 @@
           (string->list string2))))
 
 ; Función para generar códigos binarios del árbol de Huffman
-(define (codigos-huffman arbol)
+(define (generate-codes arbol)
   (cond
     ((es-hoja? arbol) (list (cons (car arbol) "0")))
     (else (codigos-aux arbol ""))))
@@ -232,8 +232,8 @@
     (else (obtener-codigo simbolo (cdr tabla-codigos)))))
 
 ; Función principal para codificar un string
-(define (huffman-encode texto arbol)
-  (codificar-string (convertir-chars-a-simbolos (string-to-list texto)) (codigos-huffman arbol)))
+(define (encode texto arbol)
+  (codificar-string (convertir-chars-a-simbolos (string-to-list texto)) (generate-codes arbol)))
 
 ; Función para convertir caracteres a símbolos
 (define (convertir-chars-a-simbolos lista-chars)
@@ -248,3 +248,16 @@
     ((null? lista-chars) "")
     (else (my-string-append (obtener-codigo (car lista-chars) tabla-codigos)
                            (codificar-string (cdr lista-chars) tabla-codigos)))))
+
+;funciones a ejecutar
+;1- (build-freq-table "tres tristes tigres tragaban trigo en un trigal")
+;
+;2- (build-tree forest)
+;
+;3- (generate-codes arbol)
+;
+;4- (encode texto arbol)
+;
+;5- (decode arbol binario)
+;
+;6- (print-tree tree)
