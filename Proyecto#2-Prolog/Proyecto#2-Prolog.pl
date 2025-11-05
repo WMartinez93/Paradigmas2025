@@ -102,7 +102,13 @@ interseccion('Padre_Kreusser', 'Av_Irrazabal', 9, 9).
 
 precio_X_Km(5000).
 
-
-
-
-
+distancia_interseccion(C1a, C2a, C1b, C2b, Distancia):-
+    interseccion(C1a, C2a, X_1, Y_1),
+	interseccion(C1b, C2b, X_2, Y_2),
+	Diff1 is X_1 - X_2,
+	Diff2 is Y_1 - Y_2,
+	Pot1 is Diff1*Diff1,
+    Pot2 is Diff2*Diff2,
+    Suma is Pot1 + Pot2,
+    Distancia is sqrt(Suma).
+    
