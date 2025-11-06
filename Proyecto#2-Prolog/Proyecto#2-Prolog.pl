@@ -101,12 +101,14 @@ interseccion('Padre_Kreusser', 'Honorio_Gonzalez', 9, 8).
 interseccion('Padre_Kreusser', 'Av_Irrazabal', 9, 9).
 
 % conductor(ID, Nombre, Calle1, Calle2, Estado)
-conductor(c1, 'Juan', 'Padre_Kreuser', 'Antequera', ocupado).
+conductor(c1, 'Juan', 'Padre_Kreusser', 'Antequera', ocupado).
 conductor(c2, 'Maria', 'Curupayty', 'Independencia_Nacional', disponible).
 conductor(c3, 'Pedro', 'Cerro_Cora', 'Antequera', disponible).
 conductor(c4, 'Sandra', 'Villarrica', 'Antequera', disponible).
 
 precio_X_Km(5000).
+
+
 
 distancia_interseccion(C1a, C2a, C1b, C2b, Distancia):-
     interseccion(C1a, C2a, X_1, Y_1),
@@ -124,12 +126,24 @@ distancia_conductor_destino(ConductorID, Calle1D, Calle2D, D):-
     D = Distancia.
     
 conductor_mas_cercano(Calle1, Calle2, ConductorID, Nombre, Distancia):-
+    lista_conductores(Calle1, Calle2, Lista),!,
+    %conductor_mas_cercano_aux(ConductorID, D, Nombre, M),
+    Distancia = Lista.
+   
+
+lista_conductores(Calle1, Calle2, Lista):-
+    lista_conductores_cercanos_aux(Calle1, Calle2, [], Lista).
+    
+lista_conductores_cercanos_aux(Calle1, Calle2, Aux, Lista):-
     conductor(ConductorID, Nombre, _, _, disponible),
     distancia_conductor_destino(ConductorID, Calle1, Calle2, D),
-    %conductor_mas_cercano_aux(ConductorID, D, Nombre, M),
-    Distancia = D.
-   
-	
-%conductor_mas_cercano_aux(ConductorId, Distancia, Nombre, Menor):-
+    \+ member((ConductorID, _, _), Aux),
+    agregar_elemento((ConductorID, D, Nombre), Aux, R1),
+    lista_conductores_cercanos_aux(Calle1, Calle2, R1, Lista).
     
+lista_conductores_cercanos_aux(_, _, Lista, Lista).
 
+agregar_elemento(X, [], [X]).
+
+agregar_elemento(X, [H|T], [H|R]):-
+    agregar_elemento(X, T, R).
