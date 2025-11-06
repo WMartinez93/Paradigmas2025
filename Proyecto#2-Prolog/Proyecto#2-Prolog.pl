@@ -100,6 +100,12 @@ interseccion('Padre_Kreusser', 'Independencia_Nacional', 9, 7).
 interseccion('Padre_Kreusser', 'Honorio_Gonzalez', 9, 8).
 interseccion('Padre_Kreusser', 'Av_Irrazabal', 9, 9).
 
+% conductor(ID, Nombre, Calle1, Calle2, Estado)
+conductor(c1, 'Juan', 'Padre_Kreuser', 'Antequera', ocupado).
+conductor(c2, 'Maria', 'Curupayty', 'Independencia_Nacional', disponible).
+conductor(c3, 'Pedro', 'Cerro_Cora', 'Antequera', disponible).
+conductor(c4, 'Sandra', 'Villarrica', 'Antequera', disponible).
+
 precio_X_Km(5000).
 
 distancia_interseccion(C1a, C2a, C1b, C2b, Distancia):-
@@ -111,4 +117,19 @@ distancia_interseccion(C1a, C2a, C1b, C2b, Distancia):-
     Pot2 is Diff2*Diff2,
     Suma is Pot1 + Pot2,
     Distancia is sqrt(Suma).
+
+distancia_conductor_destino(ConductorID, Calle1D, Calle2D, D):-
+    conductor(ConductorID, _, Calle1Or, Calle2Or, disponible),
+    distancia_interseccion(Calle1Or, Calle2Or, Calle1D, Calle2D, Distancia),
+    D = Distancia.
     
+conductor_mas_cercano(Calle1, Calle2, ConductorID, Nombre, Distancia):-
+    conductor(ConductorID, Nombre, _, _, disponible),
+    distancia_conductor_destino(ConductorID, Calle1, Calle2, D),
+    %conductor_mas_cercano_aux(ConductorID, D, Nombre, M),
+    Distancia = D.
+   
+	
+%conductor_mas_cercano_aux(ConductorId, Distancia, Nombre, Menor):-
+    
+
