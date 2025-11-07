@@ -197,3 +197,29 @@ realizar_viaje(PasajeroID,Calle1Destino,Calle2Destino):-
     precio_km(P),
     Costo is floor(Decimales * P),
     format('Costo estimado: ~w Gs ~n', [Costo]).
+
+finalizar_viaje(ConductorID, Calle1Nueva, Calle2Nueva):-
+    conductor(ConductorID, Nombre, CalleViejaA, CalleViejaB, ocupado),
+    interseccion(Calle1Nueva, Calle2Nueva, _, _),
+    !,
+    retract(conductor(ConductorID, Nombre, CalleViejaA, CalleViejaB, ocupado)),
+    assertz(conductor(ConductorID, Nombre, Calle1Nueva, Calle2Nueva, disponible)),
+    format('Conductor ~w ahora disponible en ~w y ~w.~n', [Nombre, Calle1Nueva, Calle2Nueva]).
+
+finalizar_viaje(ConductorID, _, _):-
+    \+ conductor(ConductorID, _, _, _, _),
+    !,
+    format('Error: El conductor ~w no existe.~n', [ConductorID]),
+    fail.
+
+finalizar_viaje(ConductorID, Calle1, Calle2):-
+    \+ interseccion(Calle1, Calle2, _, _),
+    !,
+    format('Error: La intersección ~w y ~w no existe.~n', [Calle1, Calle2]),
+    fail.
+
+finalizar_viaje(ConductorID, _, _):-
+    conductor(ConductorID, _, _, _, disponible),
+    !,
+    format('Error: El conductor ~w ya está disponible.~n', [ConductorID]),
+    fail.
