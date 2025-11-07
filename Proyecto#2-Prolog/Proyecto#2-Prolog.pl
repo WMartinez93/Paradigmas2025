@@ -187,14 +187,13 @@ cambiar_estado_conductor(ConductorId):-
 
 realizar_viaje(PasajeroID,Calle1Destino,Calle2Destino):-
     pasajero(PasajeroID, NombrePasajero, Calle1Destino, Calle2Destino),
-    asignar_viaje(PasajeroID, ConductorID),
-    conductor(ConductorID, NombreConductor, _, _, _),
-    format('Viaje de ~w a ~w y ~w por conductor ~w.~n', [NombrePasajero, Calle1Destino, Calle2Destino, NombreConductor]),
+    conductor_mas_cercano(Calle1Destino, Calle2Destino, ConductorID, NombreConductor, _),
     distancia_conductor_destino(ConductorID, Calle1Destino, Calle2Destino, D),
+    asignar_viaje(PasajeroID, ConductorID),
+    format('Viaje de ~w a ~w y ~w por conductor ~w.~n', [NombrePasajero, Calle1Destino, Calle2Destino, NombreConductor]),
     Dec is floor(D*100),
-    Decimales  is Dec/100,
-    format('Distancia del viaje: ~w km ~n', [Decimales] ),
+    Decimales is Dec/100,
+    format('Distancia del viaje: ~w km ~n', [Decimales]),
     precio_km(P),
     Costo is floor(Decimales * P),
-    format('Costo estimado: ~w Gs ~n', [Costo] ).
-
+    format('Costo estimado: ~w Gs ~n', [Costo]).
