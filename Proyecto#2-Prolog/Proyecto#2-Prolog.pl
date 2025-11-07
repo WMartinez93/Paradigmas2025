@@ -170,6 +170,7 @@ minimo([(_, Distancia, _)|T], Min):-
 asignar_viaje(PasajeroID,ConductorID):-
     pasajero(PasajeroID, _, Calle1Destino, Calle2Destino),
     conductor_mas_cercano(Calle1Destino, Calle2Destino, ConductorID, Nombre, Distancia),!,
+    format('Conductor ~w asignado al pasajero ~w.~n', [Nombre, PasajeroID]),
 	cambiar_estado_conductor(ConductorID).
 
 %cambiar_estado_conductor(ConductorId).
@@ -182,3 +183,4 @@ cambiar_estado_conductor(ConductorId):-
     conductor(ConductorId, Nombre, Calle1, Calle2, ocupado),
     retract(conductor(ConductorId, Nombre, Calle1, Calle2, ocupado)),
     assertz(conductor(ConductorId, Nombre, Calle1, Calle2, disponible)).
+
