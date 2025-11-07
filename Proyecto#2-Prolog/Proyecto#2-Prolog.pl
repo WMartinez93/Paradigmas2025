@@ -1,3 +1,4 @@
+:- dynamic(conductor/5).
 %interseccion(Calle1, Calle2, X, Y).
 interseccion('Av_Caballero', 'Av_Francia', 0, 0).
 interseccion('Av_Caballero', 'Antequera', 0, 1).
@@ -111,7 +112,8 @@ pasajero(p1, 'Ana', 'Tomas_R_Pereira', 'Independencia_Nacional').
 pasajero(p2, 'Luis', 'Padre_Kreusser', 'J_L_Mallorquin').
 pasajero(p3, 'Carla', 'Constitucion_Nacional', 'J_L_Mallorquin').
 
-precio_X_Km(5000).
+%precio_km(Precio).
+precio_km(5000).
 
 
 
@@ -132,7 +134,7 @@ distancia_conductor_destino(ConductorID, Calle1D, Calle2D, D):-
     
 conductor_mas_cercano(Calle1, Calle2, ConductorID, Nombre, Distancia):-
     lista_conductores(Calle1, Calle2, Lista),!,
-    minimo(Lista, (ConductorID, Nombre, Distancia)).
+    minimo(Lista, (ConductorID, Distancia, Nombre)).
     
    
 
@@ -165,21 +167,18 @@ minimo([(_, Distancia, _)|T], Min):-
     Distancia>=Distancia2,
     Min = (ID2, Distancia2, Nombre2).
 
+asignar_viaje(PasajeroID,ConductorID):-
+    pasajero(PasajeroID, _, Calle1Destino, Calle2Destino),
+    conductor_mas_cercano(Calle1Destino, Calle2Destino, ConductorID, Nombre, Distancia),!,
+	cambiar_estado_conductor(ConductorID).
 
+%cambiar_estado_conductor(ConductorId).
+cambiar_estado_conductor(ConductorId):-
+    conductor(ConductorId, Nombre, Calle1, Calle2, disponible),
+    retract(conductor(ConductorId, Nombre, Calle1, Calle2, disponible)),
+    assertz(conductor(ConductorId, Nombre, Calle1, Calle2, ocupado)).
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+cambiar_estado_conductor(ConductorId):-
+    conductor(ConductorId, Nombre, Calle1, Calle2, ocupado),
+    retract(conductor(ConductorId, Nombre, Calle1, Calle2, ocupado)),
+    assertz(conductor(ConductorId, Nombre, Calle1, Calle2, disponible)).
