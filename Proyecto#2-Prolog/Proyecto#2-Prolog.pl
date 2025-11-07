@@ -169,7 +169,7 @@ minimo([(_, Distancia, _)|T], Min):-
 
 asignar_viaje(PasajeroID,ConductorID):-
     pasajero(PasajeroID, _, Calle1Destino, Calle2Destino),
-    conductor_mas_cercano(Calle1Destino, Calle2Destino, ConductorID, Nombre, Distancia),!,
+    conductor_mas_cercano(Calle1Destino, Calle2Destino, ConductorID, Nombre, _),!,
     format('Conductor ~w asignado al pasajero ~w.~n', [Nombre, PasajeroID]),
 	cambiar_estado_conductor(ConductorID).
 
@@ -183,4 +183,18 @@ cambiar_estado_conductor(ConductorId):-
     conductor(ConductorId, Nombre, Calle1, Calle2, ocupado),
     retract(conductor(ConductorId, Nombre, Calle1, Calle2, ocupado)),
     assertz(conductor(ConductorId, Nombre, Calle1, Calle2, disponible)).
+
+
+realizar_viaje(PasajeroID,Calle1Destino,Calle2Destino):-
+    pasajero(PasajeroID, NombrePasajero, Calle1Destino, Calle2Destino),
+    asignar_viaje(PasajeroID, ConductorID),
+    conductor(ConductorID, NombreConductor, _, _, _),
+    format('Viaje de ~w a ~w y ~w por conductor ~w.~n', [NombrePasajero, Calle1Destino, Calle2Destino, NombreConductor]),
+    distancia_conductor_destino(ConductorID, Calle1Destino, Calle2Destino, D),
+    Dec is floor(D*100),
+    Decimales  is Dec/100,
+    format('Distancia del viaje: ~w km ~n', [Decimales] ),
+    precio_km(P),
+    Costo is floor(Decimales * P),
+    format('Costo estimado: ~w Gs ~n', [Costo] ).
 
