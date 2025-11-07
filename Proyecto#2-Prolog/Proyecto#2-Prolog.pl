@@ -106,6 +106,11 @@ conductor(c2, 'Maria', 'Curupayty', 'Independencia_Nacional', disponible).
 conductor(c3, 'Pedro', 'Cerro_Cora', 'Antequera', disponible).
 conductor(c4, 'Sandra', 'Villarrica', 'Antequera', disponible).
 
+% pasajero(ID, Nombre, Calle1, Calle2)
+pasajero(p1, 'Ana', 'Tomas_R_Pereira', 'Independencia_Nacional').
+pasajero(p2, 'Luis', 'Padre_Kreusser', 'J_L_Mallorquin').
+pasajero(p3, 'Carla', 'Constitucion_Nacional', 'J_L_Mallorquin').
+
 precio_X_Km(5000).
 
 
@@ -159,5 +164,22 @@ minimo([(_, Distancia, _)|T], Min):-
     minimo(T, (ID2, Distancia2, Nombre2)),
     Distancia>=Distancia2,
     Min = (ID2, Distancia2, Nombre2).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
