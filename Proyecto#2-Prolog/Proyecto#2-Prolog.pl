@@ -127,8 +127,8 @@ distancia_conductor_destino(ConductorID, Calle1D, Calle2D, D):-
     
 conductor_mas_cercano(Calle1, Calle2, ConductorID, Nombre, Distancia):-
     lista_conductores(Calle1, Calle2, Lista),!,
-    %conductor_mas_cercano_aux(ConductorID, D, Nombre, M),
-    Distancia = Lista.
+    minimo(Lista, (ConductorID, Nombre, Distancia)).
+    
    
 
 lista_conductores(Calle1, Calle2, Lista):-
@@ -147,3 +147,17 @@ agregar_elemento(X, [], [X]).
 
 agregar_elemento(X, [H|T], [H|R]):-
     agregar_elemento(X, T, R).
+
+minimo([(ID, Distancia, Nombre)], (ID, Distancia, Nombre)).
+
+minimo([(ID, Distancia, Nombre)|T], Min):-
+    minimo(T, (_, Distancia2, _)),
+    Distancia=<Distancia2,
+    Min = (ID, Distancia, Nombre).
+
+minimo([(_, Distancia, _)|T], Min):-
+    minimo(T, (ID2, Distancia2, Nombre2)),
+    Distancia>=Distancia2,
+    Min = (ID2, Distancia2, Nombre2).
+
+
